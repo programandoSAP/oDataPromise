@@ -1,0 +1,15 @@
+[
+	{
+		"name": "Jose",
+		"userType": 1
+	},{
+		"name": "Juan",
+		"userType": 2
+	},{
+		"name": "Ana",
+		"userType": 1
+	},{
+		"name": "Paco",
+		"userType": 1
+	}
+]
