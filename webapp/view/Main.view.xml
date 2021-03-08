@@ -3,7 +3,29 @@
 		<App id="app">
 			<pages>
 				<Page id="page" title="{i18n>title}">
-					<content></content>
+					<content>
+						<Table
+							id="usersList"
+							width="auto"
+							items="{ path: 'Users>/' }">
+							<columns>
+								<Column>
+									<Text text="{i18n>name}"/>
+								</Column>
+								<Column>
+									<Text text="{i18n>userType}"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{Users>name}" />
+										<ObjectNumber number="{Users>userType}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</content>
 				</Page>
 			</pages>
 		</App>

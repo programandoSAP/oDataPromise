@@ -1,11 +1,12 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function (Controller) {
+	"./BaseController",
+	"sap/ui/model/json/JSONModel"
+], function (BaseController, JSONModel) {
 	"use strict";
 
-	return Controller.extend("tools.oDataPromise.controller.Main", {
+	return BaseController.extend("tools.oDataPromise.controller.Main", {
 		onInit: function () {
-
+			this.setModel(new JSONModel([]), "Users");
 		}
 	});
 });
