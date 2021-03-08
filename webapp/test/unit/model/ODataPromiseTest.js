@@ -6,6 +6,12 @@ sap.ui.define([
 	const { module, test } = QUnit;
 
 	class ModelMock {
+		create (path, data, parameters) {
+			this.path = path;
+			this.data = data;
+			this.parameters = parameters;
+		}
+
 		read (path, parameters) {
 			this.path = path;
 			this.parameters = parameters;
@@ -76,4 +82,60 @@ sap.ui.define([
 				});
 		});
 	});
+
+	module("Create oData promise should", hooks => {
+		test("return a promise with success & error functions as parameters", assert => {
+			let path = "/path",
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				objectToCreate = { foo: "bar" };
+
+			let create = oData.create(path, objectToCreate, {});
+
+			assert.ok(create instanceof Promise, "Create method is a Promise");
+			assert.equal(model.path, path, `Path is ${model.path}`);
+			assert.equal(model.data, objectToCreate, `Data is ${JSON.stringify(model.data)}`);
+			assertParametersIncludeReturnFunctions(model.parameters, assert);
+		});
+
+		test("change status to fulfilled when success function is executed", assert => {
+			let done = assert.async(),
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				objectToCreate = { foo: "bar" };
+
+			let create = oData.create("/path", objectToCreate, {});
+			model.parameters.success(objectToCreate);
+
+			create.then(data => {
+					assert.equal(data, objectToCreate, "Create method returns expected data");
+					done();
+				})
+				.catch(error => {
+					assert.ok(false, "");
+					done();
+				});
+		});
+
+		test("change status to rejected when error function is executed", assert => {
+			let done = assert.async(),
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				objectToCreate = { foo: "bar" },
+				errorInfo = "some error info";
+
+			let create = oData.create("/path", objectToCreate, {});
+			model.parameters.error(errorInfo);
+
+			create.then(data => {
+					throwUnexpectedPointReachedError(assert);
+					done();
+				})
+				.catch(error => {
+					assert.equal(error, errorInfo, "Create method throw expected error");
+					done();
+				});
+		});
+    });
+	
 });

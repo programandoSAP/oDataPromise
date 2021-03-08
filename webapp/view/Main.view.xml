@@ -16,6 +16,11 @@
 										id="readButton"
 										type="Ghost"
 										press=".onRead"/>
+									<Button
+										icon="sap-icon://add"
+										id="addButton"
+										type="Ghost"
+										press=".onCreate"/>
 								</OverflowToolbar>
 							</headerToolbar>
 							<columns>

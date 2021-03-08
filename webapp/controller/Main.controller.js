@@ -17,6 +17,18 @@ sap.ui.define([
 		this._oData = new ODataPromise(this.getModel());
 		},
 
+		onCreate: function() {
+			let rocioAdmin = {
+					name: "Rocio",
+					userType: ADMIN
+				};
+
+			this._oData.create("/Users", rocioAdmin)
+				.then(function(data) {
+					this.onRead();
+				}.bind(this));
+		},
+
 		onRead: function() {
 			let onlyAdmin = new Filter({
 					path: "userType",
