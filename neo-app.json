@@ -36,6 +36,14 @@
         "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/HanaDataBase",
+      "target": {
+        "type": "destination",
+        "name": "HanaDataBase"
+      },
+      "description": "Hana Database"
     }
   ],
   "sendWelcomeFileRedirect": true
