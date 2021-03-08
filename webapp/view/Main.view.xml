@@ -8,6 +8,16 @@
 							id="usersList"
 							width="auto"
 							items="{ path: 'Users>/' }">
+							<headerToolbar>
+								<OverflowToolbar>
+									<ToolbarSpacer/>
+									<Button
+										icon="sap-icon://show"
+										id="readButton"
+										type="Ghost"
+										press=".onRead"/>
+								</OverflowToolbar>
+							</headerToolbar>
 							<columns>
 								<Column>
 									<Text text="{i18n>name}"/>
