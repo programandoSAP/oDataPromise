@@ -48,6 +48,18 @@ sap.ui.define([
 				.then(function(data) {
 					this.setModel(new JSONModel(data.results), "Users");
 				}.bind(this));
+		},
+
+		onUpdate: function() {
+			let juanAdmin = {
+					name: "Juan",
+					userType: ADMIN
+				};
+
+			this._oData.update("/Users(name='Juan')", juanAdmin)
+				.then(function(data) {
+					this.onRead();
+				}.bind(this));
 		}
 	});
 });

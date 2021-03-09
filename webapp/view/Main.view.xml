@@ -21,6 +21,11 @@
 										id="addButton"
 										type="Ghost"
 										press=".onCreate"/>
+									<Button
+										icon="sap-icon://edit"
+										id="editButton"
+										type="Ghost"
+										press=".onUpdate"/>
 								</OverflowToolbar>
 							</headerToolbar>
 							<columns>

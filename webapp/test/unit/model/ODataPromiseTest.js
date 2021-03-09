@@ -16,6 +16,12 @@ sap.ui.define([
 			this.path = path;
 			this.parameters = parameters;
 		}
+
+		update (path, data, parameters) {
+			this.path = path;
+			this.data = data;
+			this.parameters = parameters;
+		}
 	}
 
 	function throwUnexpectedPointReachedError(assert) {
@@ -138,4 +144,61 @@ sap.ui.define([
 		});
     });
 	
+	module("Update oData promise should", hooks => {
+		test("return a promise with success & error functions as parameters", assert => {
+			let path = "/path",
+				objectToUpdate = { foo: "baz" },
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				update;
+
+			update = oData.update(path, objectToUpdate, {});
+
+			assert.ok(update instanceof Promise, "Update method is a Promise");
+			assert.equal(model.path, path, `Path is ${model.path}`);
+			assert.equal(model.data, objectToUpdate, `Data is ${JSON.stringify(model.data)}`);
+			assertParametersIncludeReturnFunctions(model.parameters, assert);
+		});
+
+		test("change status to fulfilled when success function is executed", assert => {
+			let done = assert.async(),
+				objectToUpdate = { foo: "baz" },
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				update;
+
+			update = oData.update("/path", objectToUpdate, {});
+			model.parameters.success(objectToUpdate);
+
+			update.then(data => {
+					assert.equal(data, objectToUpdate, "Updaate method returns expected data");
+					done();
+				})
+				.catch(error => {
+					assert.ok(false, "");
+					done();
+				});
+		});
+
+		test("change status to rejected when error function is executed", assert => {
+			let done = assert.async(),
+				objectToUpdate = { foo: "baz" },
+				errorInfo = "some error info",
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				update;
+
+			update = oData.update("/path", objectToUpdate, {});
+			model.parameters.error(errorInfo);
+
+			update.then(data => {
+					throwUnexpectedPointReachedError(assert);
+					done();
+				})
+				.catch(error => {
+					assert.equal(error, errorInfo, "Update method throw expected error");
+					done();
+				});
+		});
+	});
 });
