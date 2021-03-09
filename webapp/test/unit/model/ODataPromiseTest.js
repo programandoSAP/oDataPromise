@@ -22,6 +22,11 @@ sap.ui.define([
 			this.data = data;
 			this.parameters = parameters;
 		}
+
+		remove (path, parameters) {
+			this.path = path;
+			this.parameters = parameters;
+		}
 	}
 
 	function throwUnexpectedPointReachedError(assert) {
@@ -143,7 +148,7 @@ sap.ui.define([
 				});
 		});
     });
-	
+
 	module("Update oData promise should", hooks => {
 		test("return a promise with success & error functions as parameters", assert => {
 			let path = "/path",
@@ -201,4 +206,59 @@ sap.ui.define([
 				});
 		});
 	});
+
+	module("Remove oData promise should", hooks => {
+		test("return a promise with success & error functions as parameters", assert => {
+			let path = "/path",
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				remove;
+
+			remove = oData.remove(path, {});
+
+			assert.ok(remove instanceof Promise, "Remove method is a Promise");
+			assert.equal(model.path, path, `Path is ${model.path}`);
+			assertParametersIncludeReturnFunctions(model.parameters, assert);
+		});
+
+		test("change status to fulfilled when success function is executed", assert => {
+			let done = assert.async(),
+				removedData = "some removed data",
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				remove;
+
+			remove = oData.remove("/path", {});
+			model.parameters.success(removedData);
+
+			remove.then(data => {
+					assert.equal(data, removedData, "Remove method returns expected data");
+					done();
+				})
+				.catch(error => {
+					assert.ok(false, "");
+					done();
+				});
+		});
+
+		test("change status to rejected when error function is executed", assert => {
+			let done = assert.async(),
+				errorInfo = "some error info",
+				model = new ModelMock(),
+				oData = new ODataPromise(model),
+				remove;
+
+			remove = oData.remove("/path", {});
+			model.parameters.error(errorInfo);
+
+			remove.then(data => {
+					throwUnexpectedPointReachedError(assert);
+					done();
+				})
+				.catch(error => {
+					assert.equal(error, errorInfo, "Remove method throw expected error");
+					done();
+				});
+		});
+    });
 });

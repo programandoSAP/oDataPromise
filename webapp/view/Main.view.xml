@@ -26,6 +26,11 @@
 										id="editButton"
 										type="Ghost"
 										press=".onUpdate"/>
+									<Button
+										icon="sap-icon://delete"
+										id="deleteButton"
+										type="Reject"
+										press=".onDelete"/>
 								</OverflowToolbar>
 							</headerToolbar>
 							<columns>

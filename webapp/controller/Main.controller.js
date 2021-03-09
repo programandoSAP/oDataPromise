@@ -29,6 +29,13 @@ sap.ui.define([
 				}.bind(this));
 		},
 
+		onDelete: function() {
+			this._oData.remove("/Users(name='Jose')")
+				.then(function(data) {
+					this.onRead();
+				}.bind(this));
+		},
+
 		onRead: function() {
 			let onlyAdmin = new Filter({
 					path: "userType",

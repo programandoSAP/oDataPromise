@@ -21,6 +21,12 @@ sap.ui.define([
 			});
 		}
 
+		remove(path, parameters) {
+			return new Promise((resolve, reject) => {
+				this.model.remove(path, this._addReturns(parameters, resolve, reject));
+			});
+		}
+
 		update(path, data, parameters) {
 			return new Promise((resolve, reject) => {
 				this.model.update(path, data, this._addReturns(parameters, resolve, reject));
